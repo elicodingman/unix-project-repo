@@ -8,11 +8,12 @@ echo "Hello player! Let's test your guessing skills! How many files do you think
 read response 
 }
 
-for [[ response in $game() ]] ; do
-  if ! [[ $response=$integers ]] ; then
-    echo "I'm only good at reading integers. You understand, right? Please enter an integer as your guess."
-    read new_response ; new_response > response
-  elif [[ $response=$integers && $response -lt $num_of_files ]] ; then
+if ! [[ $response=$integers ]] ; then
+  echo "I'm only good at reading integers. You understand, right? Please enter an integer as your guess."
+  read new_response ; new_response > response
+
+while [[ $response=$integers ]] ; do
+  if [[ $response=$integers && $response -lt $num_of_files ]] ; then
     echo "You guessed too low! Try again, better luck next time!"
     read new_response ; new_response > response
   elif [[ $response=$integers && $response -gt $num_of_files ]] ; then
