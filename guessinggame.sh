@@ -1,29 +1,35 @@
 #!/bin/bash
 
-num_of_files=$((ls -A | wc -l))
-integers='[^0-9]+$'
-
-function game() {
-echo "Hello player! Let's test your guessing skills! How many files do you think are in the current directory?"
-read response 
+function get_filenum {
+  filenum=$(ls | wc -l)
 }
 
-if ! [[ $response=$integers ]] ; then
-  echo "I'm only good at reading integers. You understand, right? Please enter an integer as your guess."
-  read new_response ; new_response > response
-
-while [[ $response=$integers ]] ; do
-  if [[ $response=$integers && $response -lt $num_of_files ]] ; then
-    echo "You guessed too low! Try again, better luck next time!"
-    read new_response ; new_response > response
-  elif [[ $response=$integers && $response -gt $num_of_files ]] ; then
-    echo "You guessed too high! Try again, better luck next time!"
-    read new_response ; new_response > response
-  elif [[ $response=$integers && $response -eq $num_of_files ]] ; then
-    echo "How'd you guess? That's right! Let's play again some time."
+function main {
+  if [[ $userguess =~ $filenum ]]; then
+    echo "Congratulations! You guessed correctly! Thank you for playing :)"
+    exit 1
   else
-    echo "Hmm. Something's wrong with your input. Try again and make sure it's a positive, whole number."
-    read new_response ; new_response > response
+    while ! [[ $userguess =~ $filenum ]]; do
+      if ! [[ $userguess =~ ^[0-9]+$ ]]; then
+        echo "Your input isn't an integer. Please enter a new value."
+        read userguess
+      elif [[ $userguess -gt $filenum ]]; then
+        echo "You guessed too high! Try again"
+        read userguess
+      elif [[ $userguess -lt $filenum ]]; then
+        echo "You guessed too low! Try again!"
+        read userguess
+      else
+        echo "Sorry! I had an error. Try again with a new value."
+        read userguess
+      fi
+    done
   fi
-done
+}
 
+get_filenum
+
+echo "Let's play a game! Try to guess how many files are in the current directory."
+read userguess
+
+main
