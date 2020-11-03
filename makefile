@@ -1,9 +1,8 @@
-date=$(date +"%Y-%b-%m")
-time=$(date +"%H:%M:%S")
-num_of_lines=$(wc -l guessinggame.sh | awk '{print $1 }')
-
-README.md:
-  touch README.md
-  echo "Make was run on $date at $time." > README.md
-  echo "You have a version of guessinggame.sh with $num_of_lines." >> README.md
-
+README.md: guessinggame.sh
+	touch README.md
+	echo "This file was automatically created by make on: " > README.md
+	date "+%Y-%b-%m" >> README.md
+	echo "at: " >> README.md
+	date +"%H:%M:%S" >> README.md
+	echo "The bash script guessinggame.sh has the following number of lines: " >> README.md
+	cat guessinggame.sh | wc -l >> README.md
