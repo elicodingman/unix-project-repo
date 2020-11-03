@@ -5,31 +5,34 @@ function get_filenum {
 }
 
 function main {
-  if [[ $userguess =~ $filenum ]]; then
+  read userguess
+  if [[ $userguess -eq $filenum ]]; then
     echo "Congratulations! You guessed correctly! Thank you for playing :)"
     exit 1
-  else
-    while ! [[ $userguess =~ $filenum ]]; do
+  elif ! [[ $userguess -eq  $filenum ]]; then
+    while ! [[ $userguess =~ false ]]; do
       if ! [[ $userguess =~ ^[0-9]+$ ]]; then
         echo "Your input isn't an integer. Please enter a new value."
-        read userguess
+        main
       elif [[ $userguess -gt $filenum ]]; then
         echo "You guessed too high! Try again"
-        read userguess
+        main
       elif [[ $userguess -lt $filenum ]]; then
         echo "You guessed too low! Try again!"
-        read userguess
+        main
       else
         echo "Sorry! I had an error. Try again with a new value."
-        read userguess
+        main
       fi
     done
+  else
+    echo "Sorry! I had an error. Try again with a new value."
+    main
   fi
 }
 
 get_filenum
 
 echo "Let's play a game! Try to guess how many files are in the current directory."
-read userguess
 
 main
